@@ -6,13 +6,15 @@ FIXME: improve random number generation.
 Ben Adida
 ben@adida.net
 """
+from __future__ import print_function
+from __future__ import absolute_import
 
 import hashlib
 import logging
 import math
 
-import number
-import randpool
+from . import number
+from . import randpool
 
 
 # some utilities
@@ -218,7 +220,7 @@ class EGPublicKey:
 
     # quick hack FIXME
     def toJSON(self):
-        import utils
+        from . import utils
         return utils.to_json(self.toJSONDict())
 
     def __mul__(self, other):
@@ -365,7 +367,7 @@ class EGSecretKey:
 
         sk = cls()
         sk.x = int(d['x'])
-        if d.has_key('public_key'):
+        if 'public_key' in d:
             sk.pk = EGPublicKey.from_dict(d['public_key'])
         else:
             sk.pk = None
@@ -565,7 +567,7 @@ class EGCiphertext:
         for i in range(len(plaintexts)):
             # if a proof fails, stop right there
             if not self.verify_encryption_proof(plaintexts[i], proof.proofs[i]):
-                print "bad proof %s, %s, %s" % (i, plaintexts[i], proof.proofs[i])
+                print("bad proof %s, %s, %s" % (i, plaintexts[i], proof.proofs[i]))
                 return False
 
         # logging.info("made it past the two encryption proofs")
@@ -740,7 +742,7 @@ def EG_disjunctive_challenge_generator(commitments):
         array_to_hash.append(str(commitment['B']))
 
     string_to_hash = ",".join(array_to_hash)
-    return int(hashlib.sha1(string_to_hash).hexdigest(), 16)
+    return int(hashlib.sha1(string_to_hash.encode('utf-8')).hexdigest(), 16)
 
 
 # a challenge generator for Fiat-Shamir with A,B commitment
@@ -750,4 +752,4 @@ def EG_fiatshamir_challenge_generator(commitment):
 
 def DLog_challenge_generator(commitment):
     string_to_hash = str(commitment)
-    return int(hashlib.sha1(string_to_hash).hexdigest(), 16)
+    return int(hashlib.sha1(string_to_hash.encode('utf-8')).hexdigest(), 16)
