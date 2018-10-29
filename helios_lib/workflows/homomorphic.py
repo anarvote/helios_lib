@@ -115,7 +115,7 @@ class EncryptedAnswer(HeliosObject):
 
         # min and max for number of answers, useful later
         min_answers = 0
-        if question.has_key('min'):
+        if 'min' in question:
             min_answers = question['min']
         max_answers = question['max']
 
@@ -193,7 +193,7 @@ class EncryptedAnswer(HeliosObject):
         else:
             ea.overall_proof = None
 
-        if d.has_key('randomness'):
+        if 'randomness' in d:
             ea.randomness = [int(r) for r in d['randomness']]
             ea.answer = d['answer']
 
@@ -238,7 +238,7 @@ class EncryptedVote(HeliosObject):
 
             question = election.questions[question_num]
             min_answers = 0
-            if question.has_key('min'):
+            if 'min' in question:
                 min_answers = question['min']
 
             if not ea.verify(election.public_key, min=min_answers, max=question['max']):
@@ -285,7 +285,7 @@ class DLogTable(object):
 
     def __init__(self, base, modulus):
         self.dlogs = dict()
-        hashed_value = hashlib.md5(str(1)).digest()
+        hashed_value = hashlib.md5(str(1).encode('utf-8')).digest()
         self.dlogs[hashed_value] = 0
         self.dlogs[1] = 0
         self.last_dlog_result = 1
@@ -299,7 +299,7 @@ class DLogTable(object):
 
         # new value
         new_value = (self.last_dlog_result * self.base) % self.modulus
-        hashed_value = hashlib.md5(str(new_value)).digest()
+        hashed_value = hashlib.md5(str(new_value).encode('utf-8')).digest()
 
         # record the discrete log
         self.dlogs[hashed_value] = self.counter
@@ -528,7 +528,7 @@ class Tally(HeliosObject):
                 # coalesce the decryption factors into one list
                 dec_factor_list = [df[q_num][a_num] for df in decryption_factors]
                 raw_value = self.tally[q_num][a_num].decrypt(dec_factor_list, public_key)
-                hashed_value = hashlib.md5(str(raw_value)).digest()
+                hashed_value = hashlib.md5(str(raw_value).encode('utf-8')).digest()
                 q_result.append(int(dlog_table.lookup(hashed_value)))
 
             result.append(q_result)
