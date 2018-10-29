@@ -93,3 +93,5 @@ Fire up a python shell and type:
 
 To create 1000 entries. (default value is 10000)
 
+Now you can count up to 1000 votes for each answer.
+This may take a lot of memory for big entries.
