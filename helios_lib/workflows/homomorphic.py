@@ -10,6 +10,7 @@ import hashlib
 
 from helios_lib.crypto import algs
 from helios_lib.crypto.electionalgs import HeliosObject
+import helios_lib.config as config
 
 
 class EncryptedAnswer(HeliosObject):
@@ -514,9 +515,13 @@ class Tally(HeliosObject):
         """
 
         # pre-compute a dlog table
+        if config.DLOG_BACKEND == 'default':
+            dlog_table = DLogTable(base=public_key.g, modulus=public_key.p)
+            dlog_table.precompute(self.num_tallied)
 
-        dlog_table = DLogTable(base=public_key.g, modulus=public_key.p)
-        dlog_table.precompute(self.num_tallied)
+        else:
+            import redis
+            r = redis.StrictRedis(host=config.REDIS_HOST, port=config.REDIS_PORT, db=0)
 
         result = []
 
@@ -529,7 +534,10 @@ class Tally(HeliosObject):
                 dec_factor_list = [df[q_num][a_num] for df in decryption_factors]
                 raw_value = self.tally[q_num][a_num].decrypt(dec_factor_list, public_key)
                 hashed_value = hashlib.md5(str(raw_value).encode('utf-8')).digest()
-                q_result.append(int(dlog_table.lookup(hashed_value)))
+                if config.DLOG_BACKEND == 'default':
+                    q_result.append(int(dlog_table.lookup(hashed_value)))
+                else:
+                    q_result.append(int(r.get(hashed_value)))
 
             result.append(q_result)
 
