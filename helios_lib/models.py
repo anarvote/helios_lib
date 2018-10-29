@@ -5,10 +5,11 @@ Data Objects for Helios.
 Ben Adida
 (ben@adida.net)
 """
+from __future__ import absolute_import
 from collections import Counter
 from datetime import datetime
 
-from crypto import electionalgs, algs, utils
+from .crypto import electionalgs, algs, utils
 from helios_lib import utils as heliosutils
 from helios_lib.crypto.algs import EGPublicKey, EGSecretKey
 
@@ -239,7 +240,7 @@ class HeliosElection:
         determining the winner for one question
         """
         # sort the answers , keep track of the index
-        counts = sorted(enumerate(result), key=lambda (x): x[1])
+        counts = sorted(enumerate(result), key=lambda x: x[1])
         counts.reverse()
 
         the_max = question['max'] or 1
