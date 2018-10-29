@@ -1,3 +1,4 @@
+from __future__ import print_function
 ##################################################
 # ent.py -- Element Number Theory 
 # (c) William Stein, 2004
@@ -209,7 +210,7 @@ def inversemod(a, n):
     """
     g, x, y = xgcd(a, n)
     if g != 1:
-        raise ZeroDivisionError, (a, n)
+        raise ZeroDivisionError(a, n)
     assert g == 1, "a must be coprime to n."
     return x % n
 
@@ -1039,7 +1040,7 @@ def elliptic_curve_method(N, m, tries=5):
         E, P = randcurve(N)  # (2)
         try:  # (3)
             Q = ellcurve_mul(E, m, P)  # (4)
-        except ZeroDivisionError, x:  # (5)
+        except ZeroDivisionError as x:  # (5)
             g = gcd(x[0], N)  # (6)
             if g != 1 or g != N: return g  # (7)
     return N
@@ -1195,7 +1196,7 @@ class Poly:  # (1)
 
     def __getitem__(self, m):  # (6)
         m = tuple(m)
-        if not self.v.has_key(m): self.v[m] = 0
+        if m not in self.v: self.v[m] = 0
         return self.v[m]
 
     def __setitem__(self, m, c):
@@ -1301,8 +1302,8 @@ def prove_associative():  # (15)
                                   - (x3 + x4) * (x3 - x4) * (x3 - x4))
     s2 = (x3 - x4) * (x3 - x4) * ((y1 - y5) * (y1 - y5) \
                                   - (x1 + x5) * (x1 - x5) * (x1 - x5))
-    print "Associative?"
-    print s1 == s2  # (17)
+    print("Associative?")
+    print(s1 == s2)  # (17)
 
 
 ##########################################################

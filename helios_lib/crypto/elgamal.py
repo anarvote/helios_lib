@@ -7,11 +7,13 @@ for modularity purposes.
 Ben Adida
 ben@adida.net
 """
+from __future__ import print_function
+from __future__ import absolute_import
 
 import hashlib
 import logging
 
-from algs import Utils
+from .algs import Utils
 
 
 class Cryptosystem(object):
@@ -423,7 +425,7 @@ class Ciphertext:
         for i in range(len(plaintexts)):
             # if a proof fails, stop right there
             if not self.verify_encryption_proof(plaintexts[i], proof.proofs[i]):
-                print "bad proof %s, %s, %s" % (i, plaintexts[i], proof.proofs[i])
+                print("bad proof %s, %s, %s" % (i, plaintexts[i], proof.proofs[i]))
                 return False
 
         # logging.info("made it past the two encryption proofs")
@@ -554,7 +556,7 @@ def disjunctive_challenge_generator(commitments):
         array_to_hash.append(str(commitment['B']))
 
     string_to_hash = ",".join(array_to_hash)
-    return int(hashlib.sha1(string_to_hash).hexdigest(), 16)
+    return int(hashlib.sha1(string_to_hash.encode('utf-8')).hexdigest(), 16)
 
 
 # a challenge generator for Fiat-Shamir with A,B commitment
