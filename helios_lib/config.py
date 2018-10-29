@@ -6,7 +6,7 @@ Ben Adida (ben@adida.net)
 """
 from __future__ import absolute_import
 import logging
-
+import os
 from .crypto import elgamal
 from helios_lib.crypto.elgamal import Cryptosystem
 
@@ -34,3 +34,9 @@ def _check_election_tally_type(election):
         if q['tally_type'] != "homomorphic":
             return False
     return True
+
+
+DLOG_BACKEND = os.environ.get('DLOG_BACKEND', 'default')
+REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
+REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
+REDIS_TABLE_LENGHT = os.environ.get('REDIS_TABLE_LENGHT', '10000')
