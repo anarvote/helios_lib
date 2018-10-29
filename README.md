@@ -69,3 +69,27 @@ assert helios_election.result == [[2, 2, 0, 0, 2]]
 
 
 For more complex example refer to tests
+
+
+Using Redis backend
+----
+
+In the root of project:
+
+    pip install -r requirements.txt
+
+set proper environment variables:
+
+    $DLOG_BACKEND='redis'
+    $REDIS_HOST='localhost'
+    $REDIS_PORT='6379'
+    $REDIS_TABLE_LENGHT='10000'
+
+
+Fire up a python shell and type:
+
+    >>> from helios_lib.redis_dlog_backend import RedisDlog
+    >>> RedisDlog(1000).compute()
+
+To create 1000 entries. (default value is 10000)
+
