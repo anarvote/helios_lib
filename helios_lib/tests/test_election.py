@@ -543,72 +543,71 @@ class TestHeliosElectionAggregateTally(TestHeliosElection):
         assert e.winners == [[[], [2, 1]], [[4, 1, 0], []]]
 
 
-# High load election, make sure you comment it before running the tests
 
-# class TestHeliosElectionHighLoad(TestHeliosElection):
-#     count = 200
-#
-#     @staticmethod
-#     def create_voters(count=count):
-#         return [HeliosVoter() for _ in range(count)]
-#
-#     @staticmethod
-#     def setup_voters(election):
-#         for v in election.voters:
-#             v.weight = 1
-#             v.cumulative_weight = []
-#         a = time.time()
-#         ballot = election.encrypt_ballot('[[0,4]]')
-#         for voter in election.voters:
-#             voter.vote = ballot
-#         s = time.time()
-#         print("Encrypt ballot: ", s - a)
-#         for v in election.voters:
-#             v.vote.verify(election)
-#         e = time.time()
-#         print("Verify votes: ", e - s)
-#
-#     @staticmethod
-#     def setup_election():
-#         t1 = time.time()
-#         e = TestHeliosElection.create_election()
-#         t2 = time.time()
-#         print('Create Election: ', t2 - t1)
-#         t3 = time.time()
-#         trustee_default = TestHeliosElection.create_default_trustee(e)
-#         e.trustees.append(trustee_default)
-#         t4 = time.time()
-#         print("Create trustees: ", t4 - t3)
-#         t5 = time.time()
-#         q = HeliosElection.create_question(answers_count=50, minimum=0, maximum=2, result_type='relative')
-#         e.questions = [q]
-#         t6 = time.time()
-#         print("Create question: ", t6 - t5)
-#         t7 = time.time()
-#         e.voters = TestHeliosElectionHighLoad.create_voters()
-#
-#         e.freeze()
-#         TestHeliosElectionHighLoad.setup_voters(e)
-#         e.num_cast_votes = TestHeliosElectionHighLoad.count
-#         t8 = time.time()
-#
-#         print("Voter stuff: ", t8 - t7)
-#         t9 = time.time()
-#         e.compute_tally(e.voters)
-#         helios_trustee = e.get_helios_trustee()
-#         e.helios_trustee_decrypt(helios_trustee)
-#         e.combine_decryptions()
-#         t10 = time.time()
-#         print("Compute tally: ", t10 - t9)
-#         return e
-#
-#     def test_election_result(self):
-#         e = self.setup_election()
-#         assert e.result == [
-#             [self.count, 0, 0, 0, self.count, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-#              0, 0, 0, 0, 0, 0,
-#              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-#         ]
-#
-#     def test_election_winner(self):
-#         pass
+class TestHeliosElectionHighLoad(TestHeliosElection):
+    count = 10
+
+    @staticmethod
+    def create_voters(count=count):
+        return [HeliosVoter() for _ in range(count)]
+
+    @staticmethod
+    def setup_voters(election):
+        for v in election.voters:
+            v.weight = 1
+            v.cumulative_weight = []
+        a = time.time()
+        ballot = election.encrypt_ballot('[[0,4]]')
+        for voter in election.voters:
+            voter.vote = ballot
+        s = time.time()
+        print("Encrypt ballot: ", s - a)
+        for v in election.voters:
+            v.vote.verify(election)
+        e = time.time()
+        print("Verify votes: ", e - s)
+
+    @staticmethod
+    def setup_election():
+        t1 = time.time()
+        e = TestHeliosElection.create_election()
+        t2 = time.time()
+        print('Create Election: ', t2 - t1)
+        t3 = time.time()
+        trustee_default = TestHeliosElection.create_default_trustee(e)
+        e.trustees.append(trustee_default)
+        t4 = time.time()
+        print("Create trustees: ", t4 - t3)
+        t5 = time.time()
+        q = HeliosElection.create_question(answers_count=50, minimum=0, maximum=2, result_type='relative')
+        e.questions = [q]
+        t6 = time.time()
+        print("Create question: ", t6 - t5)
+        t7 = time.time()
+        e.voters = TestHeliosElectionHighLoad.create_voters()
+
+        e.freeze()
+        TestHeliosElectionHighLoad.setup_voters(e)
+        e.num_cast_votes = TestHeliosElectionHighLoad.count
+        t8 = time.time()
+
+        print("Creating and setting up voters: ", t8 - t7)
+        t9 = time.time()
+        e.compute_tally(e.voters)
+        helios_trustee = e.get_helios_trustee()
+        e.helios_trustee_decrypt(helios_trustee)
+        e.combine_decryptions()
+        t10 = time.time()
+        print("Compute tally: ", t10 - t9)
+        return e
+
+    def test_election_result(self):
+        e = self.setup_election()
+        assert e.result == [
+            [self.count, 0, 0, 0, self.count, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ]
+
+    def test_election_winner(self):
+        pass
