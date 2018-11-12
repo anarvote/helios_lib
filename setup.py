@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="helios_lib",
-    version="0.0.1",
+    version="0.0.2",
     author="Omid Raha",
     author_email="or@omidraha.com",
     description="Helios Server (Helios is an end-to-end verifiable voting system) as library",
@@ -14,8 +14,8 @@ setuptools.setup(
     url="https://github.com/anarvote/helios_lib",
     packages=setuptools.find_packages(),
     classifiers=[
-        "Programming Language :: Python :: 2",
-        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License"
         "Operating System :: OS Independent",
     ],
     install_requires=[

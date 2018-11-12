@@ -2,6 +2,10 @@ The Helios Lib
 ===============
 
 
+[![Build Status](https://travis-ci.org/anarvote/helios_lib.svg?branch=master)](https://travis-ci.org/anarvote/helios_lib)
+
+
+
 This is [Helios-Server](https://github.com/benadida/helios-server) (Helios is an end-to-end verifiable voting system.) as library,
 
 This helios_lib version is completely independent of Django.
