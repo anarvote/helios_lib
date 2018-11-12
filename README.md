@@ -2,7 +2,7 @@ The Helios Lib
 ===============
 
 
-[![Build Status](https://travis-ci.org/anarvote/helios_lib.svg?branch=master)](https://travis-ci.org/anarvote/helios_lib)
+[![Build Status](https://travis-ci.org/anarvote/helios_lib.svg?branch=py3)](https://travis-ci.org/anarvote/helios_lib)
 
 
 
