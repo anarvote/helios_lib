@@ -19,6 +19,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'pytest==3.6.2'],
+        'pytest==9.0.3'],
 )
 
